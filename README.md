@@ -1,74 +1,59 @@
-﻿<div align="center">
-
-# @neelify/libsignal
-
-### Signal-Protokoll Baustein fuer Node.js
-### Crypto Primitives · Session Layer · PreKey Handling
-
-[![Version](https://img.shields.io/badge/Version-1.0.15-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
-[![Companion](https://img.shields.io/badge/Companion-@neelify%2Fbaileys-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
-[![npm](https://img.shields.io/npm/v/@neelify/libsignal?style=for-the-badge&color=ff69b4&logo=npm)](https://www.npmjs.com/package/@neelify/libsignal)
-[![License](https://img.shields.io/badge/License-MIT-ff69b4?style=for-the-badge)](LICENSE)
-
----
-
-<p align="center">
-  <img src="https://files.catbox.moe/phppor.JPG" width="720" alt="Neelify Header" />
-</p>
-
-[**Installation**](#installation) · [**Usage**](#usage) · [**Companion**](#companion-packages) · [**Changelog**](#changelog)
-
-</div>
-
----
-
-## Installation
-
-```bash
-npm install @neelify/libsignal@latest
-```
-
-```bash
-yarn add @neelify/libsignal@latest
-```
-
-## Usage
-
-```js
-const libsignal = require('@neelify/libsignal')
-
-console.log('libsignal loaded:', typeof libsignal === 'object' || typeof libsignal === 'function')
-```
-
-## Companion Packages
-
-```bash
-npm install @neelify/libsignal @neelify/baileys @neelify/wa-api
-```
-
-## Hinweise
-
-- Basiert auf der bekannten JavaScript libsignal-protocol Linie.
-- Einsatz als Kryptografie-Dependency fuer `@neelify/baileys`.
-- Scope ist final auf `@neelify/*` vereinheitlicht.
-
-## Changelog
-
-### 1.0.15
-
-- README bereinigt und konsolidiert
-- Entfernt: lange numerierte Platzhalter-Bloecke
-- Namespace-Doku auf `@neelify/*` fokussiert
-
-### 1.0.14
-
-- Namespace- und Publish-Vorbereitung
-
----
-
 <div align="center">
 
-Made with love by @neelify
+# 🔐 @neelify/libsignal
+
+[![Version](https://img.shields.io/badge/Version-1.0.3-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
+[![Baileys](https://img.shields.io/badge/Kompatibel_mit-@neelify/baileys_1.1.2-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
+[![License](https://img.shields.io/badge/License-MIT-ff69b4?style=for-the-badge)](LICENSE)
 
 </div>
 
+Signal-Protocol-Implementierung für Node.js, basierend auf  
+[libsignal-protocol-javascript](https://github.com/WhisperSystems/libsignal-protocol-javascript).  
+✨ **Teil des @neelify-Ökosystems** · Kompatibel mit **@neelify/baileys 1.1.2** & **Baileys API 1.7.2**
+
+---
+
+## Overview
+A ratcheting forward secrecy protocol that works in synchronous and
+asynchronous messaging environments.
+
+
+## PreKeys
+This protocol uses a concept called 'PreKeys'. A PreKey is an ECPublicKey and
+an associated unique ID which are stored together by a server. PreKeys can also
+be signed.
+
+At install time, clients generate a single signed PreKey, as well as a large
+list of unsigned PreKeys, and transmit all of them to the server.
+
+
+## Sessions
+Signal Protocol is session-oriented. Clients establish a "session," which is
+then used for all subsequent encrypt/decrypt operations. There is no need to
+ever tear down a session once one has been established.
+
+Sessions are established in one of two ways:
+
+1. PreKeyBundles. A client that wishes to send a message to a recipient can
+   establish a session by retrieving a PreKeyBundle for that recipient from the
+   server.
+2. PreKeySignalMessages. A client can receive a PreKeySignalMessage from a
+   recipient and use it to establish a session.
+
+
+## State
+An established session encapsulates a lot of state between two clients. That
+state is maintained in durable records which need to be kept for the life of
+the session.
+
+State is kept in the following places:
+
+* Identity State. Clients will need to maintain the state of their own identity
+  key pair, as well as identity keys received from other clients.
+* PreKey State. Clients will need to maintain the state of their generated
+  PreKeys.
+* Signed PreKey States. Clients will need to maintain the state of their signed
+  PreKeys.
+* Session State. Clients will need to maintain the state of the sessions they
+  have established.
