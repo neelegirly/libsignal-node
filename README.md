@@ -1,18 +1,46 @@
 <div align="center">
 
-# 🔐 @neelify/libsignal
+# @neelify/libsignal
 
-[![Version](https://img.shields.io/badge/Version-1.0.3-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
-[![Baileys](https://img.shields.io/badge/Kompatibel_mit-@neelify/baileys_1.1.2-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
+### Signal Protocol Core for Node.js  
+### Lightweight - Secure - Baileys Ready
+
+[![Version](https://img.shields.io/badge/Version-1.0.16-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
+[![Baileys](https://img.shields.io/badge/Kompatibel_mit-@neelify/baileys_2.2.3-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
+[![npm](https://img.shields.io/npm/v/@neelify/libsignal?style=for-the-badge&color=ff69b4&logo=npm)](https://www.npmjs.com/package/@neelify/libsignal)
 [![License](https://img.shields.io/badge/License-MIT-ff69b4?style=for-the-badge)](LICENSE)
+
+<p align="center">
+  <img src="https://files.catbox.moe/6np1ii.JPG" width="720" alt="Neelify Libsignal Header" />
+</p>
+
+<p align="center"><sub>2026 Glow-Up Edition - clean API docs - production-ready crypto core</sub></p>
+
+| Package | Purpose | Status |
+|---------|---------|--------|
+| **@neelify/libsignal** | Signal protocol primitives for Node.js | Stable |
 
 </div>
 
-Signal-Protocol-Implementierung für Node.js, basierend auf  
-[libsignal-protocol-javascript](https://github.com/WhisperSystems/libsignal-protocol-javascript).  
-✨ **Teil des @neelify-Ökosystems** · Kompatibel mit **@neelify/baileys 1.1.2** & **Baileys API 1.7.2**
+Signal protocol implementation for Node.js, based on
+[libsignal-protocol-javascript](https://github.com/WhisperSystems/libsignal-protocol-javascript).
+Part of the **@neelify** ecosystem and optimized for **@neelify/baileys** integrations.
 
 ---
+
+## Quick Install
+
+```bash
+npm install @neelify/libsignal
+```
+
+## Quick Usage
+
+```js
+const libsignal = require('@neelify/libsignal')
+
+console.log('libsignal loaded:', typeof libsignal === 'object')
+```
 
 ## Overview
 A ratcheting forward secrecy protocol that works in synchronous and
@@ -57,3 +85,11 @@ State is kept in the following places:
   PreKeys.
 * Session State. Clients will need to maintain the state of the sessions they
   have established.
+
+---
+
+<div align="center">
+
+Copyright 2026 neelify
+
+</div>
