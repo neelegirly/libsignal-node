@@ -11,6 +11,7 @@ const protobufs = require('./protobufs');
 const queueJob = require('./queue_job');
 
 const VERSION = 3;
+let decryptSessionMismatchWarned = false;
 
 function assertBuffer(value) {
     if (!(value instanceof Buffer)) {
@@ -154,7 +155,10 @@ class SessionCipher {
                 errs.push(e);
             }
         }
-        console.error("Failed to decrypt message with any known session, wait baron will fix it..");
+        if (!decryptSessionMismatchWarned) {
+            decryptSessionMismatchWarned = true;
+            console.warn("Failed to decrypt message with any known session. Wait Neele will fix it.");
+        }
         // for (const e of errs) {
             // console.error("Session error:" + e, e.stack);
         // }

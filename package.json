@@ -1,6 +1,6 @@
 {
    "name": "@neelify/libsignal",
-   "version": "1.0.19",
+   "version": "1.0.20",
    "description": "Open Whisper Systems' libsignal for Node.js",
    "repository": "neelify/libsignal-node",
    "homepage": "https://github.com/neelify/libsignal-node#readme",
