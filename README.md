@@ -5,8 +5,8 @@
 ### Signal Protocol Core for Node.js  
 ### Lightweight - Secure - Baileys Ready
 
-[![Version](https://img.shields.io/badge/Version-1.0.23-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
-[![Baileys](https://img.shields.io/badge/Kompatibel_mit-@neelify/baileys_2.2.11-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
+[![Version](https://img.shields.io/badge/Version-1.0.24-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
+[![Baileys](https://img.shields.io/badge/Kompatibel_mit-@neelify/baileys_2.2.12-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
 [![npm](https://img.shields.io/npm/v/@neelify/libsignal?style=for-the-badge&color=ff69b4&logo=npm)](https://www.npmjs.com/package/@neelify/libsignal)
 [![License](https://img.shields.io/badge/License-MIT-ff69b4?style=for-the-badge)](LICENSE)
 
@@ -96,15 +96,16 @@ Copyright 2026 neelify
 
 ---
 
-## 🔔 Update (03.04.2026)
+## 🔔 Update (05.04.2026)
 
-- npm-Release aktualisiert auf `@neelify/libsignal@1.0.23`.
+- npm-Release aktualisiert auf `@neelify/libsignal@1.0.24`.
 - Paket-Metadaten für Veröffentlichung bereinigt (Repository/Homepage/Bugs/Files/Keywords).
+- Decrypt-Logmeldung im Session-Cipher entschärft (kein „Wait Neele...“-Text mehr).
 - Inhalt der README wurde auf den vorherigen Stand zurückgesetzt; dieser Abschnitt ist die einzige neue Ergänzung.
 
 ## Was ausgebessert wurde
 
-- Veraltete Versionsangaben im README auf `1.0.23` korrigiert.
+- Veraltete Versionsangaben im README auf `1.0.24` korrigiert.
 - Badge-Kompatibilität auf den aktuellen Neelify-Stack aktualisiert.
 
 ## Was verändert wurde
@@ -114,5 +115,6 @@ Copyright 2026 neelify
 
 ## Was neu ist
 
-- Neue Release-Markierung für `@neelify/libsignal@1.0.23`.
+- Neue Release-Markierung für `@neelify/libsignal@1.0.24`.
+- Entschärfte Decrypt-Fehlerausgabe jetzt direkt im Paket-Source integriert.
 - Klarer Versions-/Änderungsblock für diesen Upload-Zyklus.
