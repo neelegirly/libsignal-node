@@ -155,30 +155,15 @@ class SessionCipher {
                 errs.push(e);
             }
         }
-        const isMessageCounterError = (error) => error?.name === 'MessageCounterError';
-        const isBadMacError = (error) => /bad mac/i.test(String(error?.message || error || ''));
-        const allMessageCounter = errs.length > 0 && errs.every(isMessageCounterError);
-        const allBadMac = errs.length > 0 && errs.every(isBadMacError);
-        const retryableDecryptErrors = errs.length > 0 && errs.every(e => isMessageCounterError(e) || isBadMacError(e));
-        const hasAnyBadMac = errs.some(isBadMacError);
-        if (!allMessageCounter && !allBadMac && !(retryableDecryptErrors && hasAnyBadMac) && !retryableDecryptErrors) {
-            if (!decryptSessionMismatchWarned) {
-                decryptSessionMismatchWarned = true;
-                console.warn("Decrypt failed with known sessions (transient/non-fatal).");
-            }
-            for (const e of errs) {
-                console.error("Session error:" + e, e?.stack);
+        if (!decryptSessionMismatchWarned) {
+            decryptSessionMismatchWarned = true;
+            if (process.env.ONIMAI_LOG_SIGNAL_DECRYPT_WARN === '1') {
+                console.warn("Failed to decrypt message with any known session (transient).");
             }
         }
-        if (allMessageCounter) {
-            throw new errors.SessionError("Key used already or never filled");
-        }
-        if (allBadMac || (retryableDecryptErrors && hasAnyBadMac)) {
-            throw new errors.SessionError("Bad MAC");
-        }
-        if (retryableDecryptErrors) {
-            throw new errors.SessionError("Key used already or never filled");
-        }
+        // for (const e of errs) {
+            // console.error("Session error:" + e, e.stack);
+        // }
         throw new errors.SessionError("No matching sessions found for message");
     }
 
@@ -282,7 +267,7 @@ class SessionCipher {
             throw new errors.SessionError('Over 2000 messages into the future!');
         }
         if (chain.chainKey.key === undefined) {
-            throw new errors.MessageCounterError('Key used already or never filled');
+            throw new errors.SessionError('Chain closed');
         }
         const key = chain.chainKey.key;
         chain.messageKeys[chain.chainKey.counter + 1] = crypto.calculateMAC(key, Buffer.from([1]));

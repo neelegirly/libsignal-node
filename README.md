@@ -1,120 +1,57 @@
-<div align="center">
-
 # @neelify/libsignal
 
-### Signal Protocol Core for Node.js  
-### Lightweight - Secure - Baileys Ready
+`@neelify/libsignal` ist die kryptografische Signal-Abhaengigkeit fuer `@neelify/baileys`.
+Das Paket stellt die noetigen Signal-Protokoll-Primitiven fuer Session-Aufbau und E2E-Verarbeitung bereit.
 
-[![Version](https://img.shields.io/badge/Version-1.0.26-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
-[![Baileys](https://img.shields.io/badge/Kompatibel_mit-@neelify/baileys_2.2.15-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
-[![npm](https://img.shields.io/npm/v/@neelify/libsignal?style=for-the-badge&color=ff69b4&logo=npm)](https://www.npmjs.com/package/@neelify/libsignal)
-[![License](https://img.shields.io/badge/License-MIT-ff69b4?style=for-the-badge)](LICENSE)
+## Einsatzzweck
 
-<p align="center">
-  <img src="https://files.catbox.moe/6np1ii.JPG" width="720" alt="Neelify Libsignal Header" />
-</p>
+- kryptografische Basis fuer Schluessel-/Session-Operationen
+- Verwendung als Abhaengigkeit in `@neelify/baileys`
+- keine eigene Bot-API, sondern Core-Crypto-Baustein
 
-<p align="center"><sub>2026 Glow-Up Edition - clean API docs - production-ready crypto core</sub></p>
 
-| Package | Purpose | Status |
-|---------|---------|--------|
-| **@neelify/libsignal** | Signal protocol primitives for Node.js | Stable |
+## Kompatibilitaet
 
-</div>
+- `@neelify/libsignal`: `1.0.27`
+- `@neelify/baileys`: `2.2.16`
+- `@neelify/wa-api`: `1.7.15`
 
-Signal protocol implementation for Node.js, based on
-[libsignal-protocol-javascript](https://github.com/WhisperSystems/libsignal-protocol-javascript).
-Part of the **@neelify** ecosystem and optimized for **@neelify/baileys** integrations.
-
----
-
-## Quick Install
+## Installation
 
 ```bash
 npm install @neelify/libsignal
 ```
 
-## Quick Usage
+## Minimalbeispiel
 
 ```js
 const libsignal = require('@neelify/libsignal')
 
-console.log('libsignal loaded:', typeof libsignal === 'object')
+console.log('libsignal geladen:', typeof libsignal === 'object')
 ```
 
-## Overview
-A ratcheting forward secrecy protocol that works in synchronous and
-asynchronous messaging environments.
+## Namespace und Scope
 
+Der Paketname ist konsistent auf den Neelify-Scope gesetzt:
 
-## PreKeys
-This protocol uses a concept called 'PreKeys'. A PreKey is an ECPublicKey and
-an associated unique ID which are stored together by a server. PreKeys can also
-be signed.
+- `@neelify/libsignal`
 
-At install time, clients generate a single signed PreKey, as well as a large
-list of unsigned PreKeys, and transmit all of them to the server.
-
-
-## Sessions
-Signal Protocol is session-oriented. Clients establish a "session," which is
-then used for all subsequent encrypt/decrypt operations. There is no need to
-ever tear down a session once one has been established.
-
-Sessions are established in one of two ways:
-
-1. PreKeyBundles. A client that wishes to send a message to a recipient can
-   establish a session by retrieving a PreKeyBundle for that recipient from the
-   server.
-2. PreKeySignalMessages. A client can receive a PreKeySignalMessage from a
-   recipient and use it to establish a session.
-
-
-## State
-An established session encapsulates a lot of state between two clients. That
-state is maintained in durable records which need to be kept for the life of
-the session.
-
-State is kept in the following places:
-
-* Identity State. Clients will need to maintain the state of their own identity
-  key pair, as well as identity keys received from other clients.
-* PreKey State. Clients will need to maintain the state of their generated
-  PreKeys.
-* Signed PreKey States. Clients will need to maintain the state of their signed
-  PreKeys.
-* Session State. Clients will need to maintain the state of the sessions they
-  have established.
-
----
-
-<div align="center">
-
-Copyright 2026 neelify
-
-</div>
-
----
-
-## 🔔 Update (06.04.2026)
-
-- npm-Release aktualisiert auf `@neelify/libsignal@1.0.26`.
-- Paket-Metadaten für Veröffentlichung bereinigt (Repository/Homepage/Bugs/Files/Keywords).
-- Decrypt-Logmeldung im Session-Cipher entschärft (kein „Wait Neele...“-Text mehr).
-- Kompatibilität mit dem aktuellen Stack (`@neelify/baileys@2.2.15`) synchronisiert.
+Damit ist die Zuordnung im Neelify-Stack (`libsignal` -> `baileys` -> `wa-api`) eindeutig.
 
 ## Was ausgebessert wurde
 
-- Veraltete Versionsangaben im README auf `1.0.26` korrigiert.
-- Kompatibilitäts-Badge auf `@neelify/baileys 2.2.15` angehoben.
+- README sprachlich und strukturell bereinigt.
+- Uneinheitliche Darstellung zu Scope/Namespace konsolidiert.
+- Funktionierenden Crypto-Stand fuer den Neelify-Stack als Release-Basis uebernommen.
 
-## Was verändert wurde
+## Was veraendert wurde
 
-- Der bestehende README-Stil blieb erhalten; ergänzt wurden nur releasebezogene Korrekturen.
-- Release-Referenzen für Publish, Scope und Kompatibilität wurden auf den aktuellen Stand gesetzt.
+- Dokumentation auf den praktischen Einsatzzweck als Crypto-Abhaengigkeit fokussiert.
+- Installations- und Minimalbeispiel klar und knapp neu aufgebaut.
+- Kompatibilitaetsbezug zu `@neelify/baileys`/`@neelify/wa-api` im Neelify-Stack klarer formuliert.
 
 ## Was neu ist
 
-- Neue Release-Markierung für `@neelify/libsignal@1.0.26`.
-- Entschärfte Decrypt-Fehlerausgabe jetzt direkt im Paket-Source integriert.
-- Klarer Versions-/Änderungsblock für diesen Upload-Zyklus inklusive Stack-Hinweis auf `baileys@2.2.15`.
+- Konsolidierte, release-taugliche README-Struktur.
+- Klare Scope-Kommunikation fuer das `@neelify/...`-Namespace.
+- Release auf Version `1.0.27` als stabile Basis fuer `@neelify/baileys@2.2.16`.

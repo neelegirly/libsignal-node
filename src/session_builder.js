@@ -63,11 +63,11 @@ class SessionBuilder {
         }
         const preKeyPair = await this.storage.loadPreKey(message.preKeyId);
         if (message.preKeyId && !preKeyPair) {
-            throw new errors.PreKeyError('Key used already or never filled');
+            throw new errors.PreKeyError('Invalid PreKey ID');
         }   
         const signedPreKeyPair = await this.storage.loadSignedPreKey(message.signedPreKeyId);
         if (!signedPreKeyPair) { 
-            throw new errors.PreKeyError('Key used already or never filled');
+            throw new errors.PreKeyError("Missing SignedPreKey");
         }   
         const existingOpenSession = record.getOpenSession();
         if (existingOpenSession) {
