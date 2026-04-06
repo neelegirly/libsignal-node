@@ -1,6 +1,6 @@
 {
   "name": "@neelify/libsignal",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "Signal protocol crypto dependency for @neelify/baileys on Node.js",
   "repository": {
     "type": "git",

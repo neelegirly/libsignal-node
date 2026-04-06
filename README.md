@@ -5,8 +5,8 @@
 ### Signal Protocol Core for Node.js  
 ### Lightweight - Secure - Baileys Ready
 
-[![Version](https://img.shields.io/badge/Version-1.0.25-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
-[![Baileys](https://img.shields.io/badge/Kompatibel_mit-@neelify/baileys_2.2.13-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
+[![Version](https://img.shields.io/badge/Version-1.0.26-ff69b4?style=for-the-badge&logo=github)](https://github.com/neelify/libsignal-node)
+[![Baileys](https://img.shields.io/badge/Kompatibel_mit-@neelify/baileys_2.2.15-9b59b6?style=for-the-badge)](https://www.npmjs.com/package/@neelify/baileys)
 [![npm](https://img.shields.io/npm/v/@neelify/libsignal?style=for-the-badge&color=ff69b4&logo=npm)](https://www.npmjs.com/package/@neelify/libsignal)
 [![License](https://img.shields.io/badge/License-MIT-ff69b4?style=for-the-badge)](LICENSE)
 
@@ -96,25 +96,25 @@ Copyright 2026 neelify
 
 ---
 
-## 🔔 Update (05.04.2026)
+## 🔔 Update (06.04.2026)
 
-- npm-Release aktualisiert auf `@neelify/libsignal@1.0.25`.
+- npm-Release aktualisiert auf `@neelify/libsignal@1.0.26`.
 - Paket-Metadaten für Veröffentlichung bereinigt (Repository/Homepage/Bugs/Files/Keywords).
 - Decrypt-Logmeldung im Session-Cipher entschärft (kein „Wait Neele...“-Text mehr).
-- Inhalt der README wurde auf den vorherigen Stand zurückgesetzt; dieser Abschnitt ist die einzige neue Ergänzung.
+- Kompatibilität mit dem aktuellen Stack (`@neelify/baileys@2.2.15`) synchronisiert.
 
 ## Was ausgebessert wurde
 
-- Veraltete Versionsangaben im README auf `1.0.25` korrigiert.
-- Badge-Kompatibilität auf den aktuellen Neelify-Stack aktualisiert.
+- Veraltete Versionsangaben im README auf `1.0.26` korrigiert.
+- Kompatibilitäts-Badge auf `@neelify/baileys 2.2.15` angehoben.
 
 ## Was verändert wurde
 
-- Der bestehende README-Stil blieb erhalten; ergänzt wurde nur ein klarer Release-Hinweis.
-- Release-Referenzen für Publish und Scope wurden an den aktuellen Stand angepasst.
+- Der bestehende README-Stil blieb erhalten; ergänzt wurden nur releasebezogene Korrekturen.
+- Release-Referenzen für Publish, Scope und Kompatibilität wurden auf den aktuellen Stand gesetzt.
 
 ## Was neu ist
 
-- Neue Release-Markierung für `@neelify/libsignal@1.0.25`.
+- Neue Release-Markierung für `@neelify/libsignal@1.0.26`.
 - Entschärfte Decrypt-Fehlerausgabe jetzt direkt im Paket-Source integriert.
-- Klarer Versions-/Änderungsblock für diesen Upload-Zyklus.
+- Klarer Versions-/Änderungsblock für diesen Upload-Zyklus inklusive Stack-Hinweis auf `baileys@2.2.15`.
