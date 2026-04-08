@@ -1,14 +1,14 @@
 {
-  "name": "@neelify/libsignal",
-  "version": "1.0.27",
-  "description": "Signal protocol crypto dependency for @neelify/baileys on Node.js",
+  "name": "@neelegirly/libsignal",
+  "version": "1.0.28",
+  "description": "Signal protocol crypto dependency for @neelegirly/baileys on Node.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neelify/libsignal-node.git"
+    "url": "git+https://github.com/neelegirly/libsignal-node.git"
   },
-  "homepage": "https://github.com/neelify/libsignal-node#readme",
+  "homepage": "https://github.com/neelegirly/libsignal-node#readme",
   "bugs": {
-    "url": "https://github.com/neelify/libsignal-node/issues"
+    "url": "https://github.com/neelegirly/libsignal-node/issues"
   },
   "main": "index.js",
   "keywords": [
@@ -16,7 +16,7 @@
     "whispersystems",
     "crypto",
     "signal-protocol",
-    "neelify",
+    "neelegirly",
     "baileys"
   ],
   "license": "MIT",

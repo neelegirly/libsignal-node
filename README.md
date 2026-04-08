@@ -1,57 +1,64 @@
-# @neelify/libsignal
+<div align="center">
 
-`@neelify/libsignal` ist die kryptografische Signal-Abhaengigkeit fuer `@neelify/baileys`.
-Das Paket stellt die noetigen Signal-Protokoll-Primitiven fuer Session-Aufbau und E2E-Verarbeitung bereit.
+# 🔐 @neelegirly/libsignal 🔐
 
-## Einsatzzweck
+### *Crypto Core fuer den Neelegirly Stack*  
+### *Signal Sessions · Key Material · E2E Foundation*
 
-- kryptografische Basis fuer Schluessel-/Session-Operationen
-- Verwendung als Abhaengigkeit in `@neelify/baileys`
-- keine eigene Bot-API, sondern Core-Crypto-Baustein
+[![npm](https://img.shields.io/npm/v/@neelegirly/libsignal?style=for-the-badge&color=ff69b4&logo=npm)](https://www.npmjs.com/package/@neelegirly/libsignal)
+[![baileys](https://img.shields.io/badge/baileys-2.2.17-ff8fab?style=for-the-badge)](https://www.npmjs.com/package/@neelegirly/baileys)
+[![wa-api](https://img.shields.io/badge/wa--api-1.7.16-f4a261?style=for-the-badge)](https://www.npmjs.com/package/@neelegirly/wa-api)
 
+<p align="center">
+	<img src="https://files.catbox.moe/z90ndt.jpeg" width="420" alt="Neelegirly libsignal hero" />
+</p>
 
-## Kompatibilitaet
+**🗝️ Release-Stack:** `@neelegirly/libsignal 1.0.28` · `@neelegirly/baileys 2.2.17` · `@neelegirly/wa-api 1.7.16`
 
-- `@neelify/libsignal`: `1.0.27`
-- `@neelify/baileys`: `2.2.16`
-- `@neelify/wa-api`: `1.7.15`
+</div>
 
-## Installation
+`@neelegirly/libsignal` ist die kryptografische Signal-Abhaengigkeit fuer `@neelegirly/baileys` und damit indirekt auch fuer `@neelegirly/wa-api`.
+Das Paket liefert den E2E-Kern fuer Session-Aufbau, Key-Verarbeitung und sichere Nachrichtenfluesse.
+
+## ✨ Highlights
+
+| Bereich | Beschreibung | Status |
+| --- | --- | --- |
+| 🔑 Key Material | zentrale Primitive fuer Session-/Schluessel-Operationen | ✅ |
+| 🛡️ E2E Core | Basis fuer verschluesselte Nachrichten im Neelegirly-Stack | ✅ |
+| 🧩 Stack-Kompatibel | sauberer Fit fuer `baileys` und `wa-api` | ✅ |
+| 🎀 Klarer Scope | `@neelegirly/libsignal` als eindeutige Release-Basis | ✅ |
+
+## 📦 Kompatibilitaet
+
+- `@neelegirly/libsignal`: `1.0.28`
+- `@neelegirly/baileys`: `2.2.17`
+- `@neelegirly/wa-api`: `1.7.16`
+
+## 🚀 Installation
 
 ```bash
-npm install @neelify/libsignal
+npm install @neelegirly/libsignal@1.0.28 --save-exact
 ```
 
-## Minimalbeispiel
+## ⚡ Minimalbeispiel
 
 ```js
-const libsignal = require('@neelify/libsignal')
+const libsignal = require('@neelegirly/libsignal')
 
 console.log('libsignal geladen:', typeof libsignal === 'object')
 ```
 
-## Namespace und Scope
+## 🩷 Scope und Rolle im Stack
 
-Der Paketname ist konsistent auf den Neelify-Scope gesetzt:
+- `@neelegirly/libsignal` = Crypto-Core
+- `@neelegirly/baileys` = WhatsApp-Web-Layer
+- `@neelegirly/wa-api` = Multi-Session-Wrapper
 
-- `@neelify/libsignal`
+Damit bleibt der Aufbau im gesamten Neelegirly-Stack klar und release-sicher.
 
-Damit ist die Zuordnung im Neelify-Stack (`libsignal` -> `baileys` -> `wa-api`) eindeutig.
+## 🔄 Release-Notizen
 
-## Was ausgebessert wurde
-
-- README sprachlich und strukturell bereinigt.
-- Uneinheitliche Darstellung zu Scope/Namespace konsolidiert.
-- Funktionierenden Crypto-Stand fuer den Neelify-Stack als Release-Basis uebernommen.
-
-## Was veraendert wurde
-
-- Dokumentation auf den praktischen Einsatzzweck als Crypto-Abhaengigkeit fokussiert.
-- Installations- und Minimalbeispiel klar und knapp neu aufgebaut.
-- Kompatibilitaetsbezug zu `@neelify/baileys`/`@neelify/wa-api` im Neelify-Stack klarer formuliert.
-
-## Was neu ist
-
-- Konsolidierte, release-taugliche README-Struktur.
-- Klare Scope-Kommunikation fuer das `@neelify/...`-Namespace.
-- Release auf Version `1.0.27` als stabile Basis fuer `@neelify/baileys@2.2.16`.
+- README neu im Glow-up-Stil aufgebaut
+- Stack-Versionen auf `1.0.28 / 2.2.17 / 1.7.16` angehoben
+- weiterhin fokussiert auf den stabilen Crypto-Einsatz ohne Bot-Wrapper-Ballast
