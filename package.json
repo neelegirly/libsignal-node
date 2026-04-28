@@ -1,6 +1,6 @@
 {
   "name": "@neelegirly/libsignal",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "Signal protocol crypto dependency for @neelegirly/baileys on Node.js",
   "repository": {
     "type": "git",
@@ -20,15 +20,13 @@
     "baileys"
   ],
   "license": "MIT",
-  "scripts": {
-    "build": "pbjs -t static-module -w commonjs -o ./src/WhisperTextProtocol.js ./protos/WhisperTextProtocol.proto"
-  },
   "dependencies": {
     "curve25519-js": "^0.0.4",
     "protobufjs": "7.5.0"
   },
   "files": [
     "index.js",
+    "index.d.ts",
     "src/**/*",
     "README.md",
     "LICENSE"
@@ -38,5 +36,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "types": "index.d.ts"
 }
