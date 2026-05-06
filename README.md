@@ -6,14 +6,14 @@
 ### *Signal Sessions · Key Material · E2E Foundation*
 
 [![npm](https://img.shields.io/npm/v/@neelegirly/libsignal?style=for-the-badge&color=ff69b4&logo=npm)](https://www.npmjs.com/package/@neelegirly/libsignal)
-[![baileys](https://img.shields.io/badge/baileys-2.2.21-ff8fab?style=for-the-badge)](https://www.npmjs.com/package/@neelegirly/baileys)
+[![baileys](https://img.shields.io/badge/baileys-2.2.22-ff8fab?style=for-the-badge)](https://www.npmjs.com/package/@neelegirly/baileys)
 [![wa-api](https://img.shields.io/badge/wa--api-1.8.6-f4a261?style=for-the-badge)](https://www.npmjs.com/package/@neelegirly/wa-api)
 
 <p align="center">
 	<img src="https://files.catbox.moe/z90ndt.jpeg" width="420" alt="Neelegirly libsignal hero" />
 </p>
 
-**🗝️ Release-Stack:** `@neelegirly/libsignal 1.0.30` · `@neelegirly/baileys 2.2.21` · `@neelegirly/wa-api 1.8.6`
+**🗝️ Release-Stack:** `@neelegirly/libsignal 1.0.31` · `@neelegirly/baileys 2.2.22` · `@neelegirly/wa-api 1.8.6`
 
 </div>
 
@@ -31,14 +31,14 @@ Das Paket liefert den E2E-Kern fuer Session-Aufbau, Key-Verarbeitung und sichere
 
 ## 📦 Kompatibilitaet
 
-- `@neelegirly/libsignal`: `1.0.30`
-- `@neelegirly/baileys`: `2.2.21`
+- `@neelegirly/libsignal`: `1.0.31`
+- `@neelegirly/baileys`: `2.2.22`
 - `@neelegirly/wa-api`: `1.8.6`
 
 ## 🚀 Installation
 
 ```bash
-npm install @neelegirly/libsignal@1.0.30 --save-exact
+npm install @neelegirly/libsignal@1.0.31 --save-exact
 ```
 
 ## ⚡ Minimalbeispiel
@@ -61,5 +61,5 @@ Damit bleibt der Aufbau im gesamten Neelegirly-Stack klar und release-sicher.
 
 - WhiskeySockets/libsignal-node TypeScript-Definitionen uebernommen und auf die Neelegirly-API abgestimmt
 - ProtocolAddress-Typen, Curve-Definitionen und Public-Key-Helfer sauber beschrieben
-- Stack-Versionen auf `1.0.30 / 2.2.21 / 1.8.6` angehoben
+- Stack-Versionen auf `1.0.31 / 2.2.22 / 1.8.6` angehoben
 - weiterhin fokussiert auf den stabilen Crypto-Einsatz ohne Bot-Wrapper-Ballast
