@@ -2,18 +2,26 @@
 #
 # Anmeldung bei npm über Trusted Publishing (OIDC): kein Token im Repo, keine Repo-Secrets, kein Token auf dem Server.
 # Einmalig je Paket einzurichten — auf npmjs.com (Paket → Settings → Trusted Publisher → GitHub Actions,
-# Workflow-Datei release.yml, Environment leer) oder mit
+# Repository = dieses Repo, Workflow-Datei release.yml, Environment leer) oder mit
 #   npm trust github <paket> --file release.yml --repository <owner>/<repo> --allow-publish
 # Ohne diese Einrichtung scheitert nur der letzte Schritt (npm publish); alles davor bleibt eine reine Prüfung.
 #
-# Der Tag muss auf main liegen und genau "v" + package.json-Version heißen; eine schon veröffentlichte Version
-# bricht ab. Tests laufen vor dem Veröffentlichen mit frisch installierten Laufzeit-Abhängigkeiten.
+# Neuversuch für einen schon gepushten Tag (z. B. nach dem Einrichten): Actions → Release → Run workflow, tag = vX.Y.Z
+# (oder: gh workflow run release.yml -f tag=vX.Y.Z). Der Tag muss auf main liegen und genau "v" + package.json-Version
+# heißen; eine schon veröffentlichte Version bricht ab. Tests laufen vorher mit frisch installierten Laufzeit-Abhängigkeiten.
 name: Release
+run-name: Release ${{ inputs.tag || github.ref_name }}
 
 on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Vorhandener Versions-Tag, der veröffentlicht werden soll (vX.Y.Z)'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -30,10 +38,22 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
     steps:
+      - name: Tag-Namen prüfen
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! [[ "${TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Ungültiger Tag-Name (erwartet vX.Y.Z)"
+            exit 1
+          fi
+
       - name: Quelle holen
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: refs/tags/${{ env.TAG }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -59,13 +79,17 @@ jobs:
           set -euo pipefail
           name="$(node -p 'require("./package.json").name')"
           version="$(node -p 'require("./package.json").version')"
-          if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
-            echo "::error::Tag ${GITHUB_REF_NAME} passt nicht zu package.json (${version})"
+          if [ "v${version}" != "${TAG}" ]; then
+            echo "::error::Tag ${TAG} passt nicht zu package.json (${version})"
             exit 1
           fi
-          commit="$(git rev-parse "${GITHUB_REF_NAME}^{commit}")"
+          commit="$(git rev-parse "refs/tags/${TAG}^{commit}")"
+          if [ "$(git rev-parse HEAD)" != "${commit}" ]; then
+            echo "::error::Ausgecheckter Stand ist nicht der Tag ${TAG}"
+            exit 1
+          fi
           if ! git merge-base --is-ancestor "${commit}" origin/main; then
-            echo "::error::Tag ${GITHUB_REF_NAME} (${commit}) liegt nicht auf main"
+            echo "::error::Tag ${TAG} (${commit}) liegt nicht auf main"
             exit 1
           fi
           if npm view "${name}@${version}" version --registry https://registry.npmjs.org >/dev/null 2>&1; then
@@ -108,4 +132,13 @@ jobs:
           JS
 
       - name: Auf npm veröffentlichen (Trusted Publishing, Herkunftsnachweis automatisch)
-        run: npm publish --access public --ignore-scripts
+        shell: bash
+        run: |
+          set -uo pipefail
+          if npm publish --access public --ignore-scripts --loglevel verbose 2>&1 | tee "${RUNNER_TEMP}/publish.log"; then
+            exit 0
+          fi
+          echo "::error::npm publish gescheitert — Meldungen zur Trusted-Publishing-Anmeldung (oidc):"
+          grep -i 'oidc' "${RUNNER_TEMP}/publish.log" || echo "(keine oidc-Zeilen: fehlt das id-token-Recht?)"
+          echo "Häufigste Ursache: Auf npmjs.com passt die Vertrauensstellung nicht genau zu ${GITHUB_REPOSITORY} / release.yml (Environment leer)."
+          exit 1
