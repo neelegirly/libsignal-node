@@ -4,11 +4,12 @@
 # Einmalig je Paket einzurichten — auf npmjs.com (Paket → Settings → Trusted Publisher → GitHub Actions,
 # Repository = dieses Repo, Workflow-Datei release.yml, Environment leer) oder mit
 #   npm trust github <paket> --file release.yml --repository <owner>/<repo> --allow-publish
-# Ohne diese Einrichtung scheitert nur der letzte Schritt (npm publish); alles davor bleibt eine reine Prüfung.
 #
-# Neuversuch für einen schon gepushten Tag (z. B. nach dem Einrichten): Actions → Release → Run workflow, tag = vX.Y.Z
-# (oder: gh workflow run release.yml -f tag=vX.Y.Z). Der Tag muss auf main liegen und genau "v" + package.json-Version
-# heißen; eine schon veröffentlichte Version bricht ab. Tests laufen vorher mit frisch installierten Laufzeit-Abhängigkeiten.
+# Zwei Jobs: „pruefen“ (ohne Veröffentlichungsrecht) installiert frisch und testet mit Node 22 und 24; erst danach darf
+# „veroeffentlichen“ (id-token) laufen — dort läuft kein fremder Code (kein npm ci, keine Tests, --ignore-scripts),
+# und nur genau der geprüfte Commit wird veröffentlicht.
+# Neuversuch für einen schon gepushten Tag: Actions → Release → Run workflow, tag = vX.Y.Z
+# (oder: gh workflow run release.yml -f tag=vX.Y.Z). Der Tag muss auf main liegen und „v“ + package.json-Version heißen.
 name: Release
 run-name: Release ${{ inputs.tag || github.ref_name }}
 
@@ -30,16 +31,22 @@ concurrency:
   group: npm-release-${{ github.repository }}
   cancel-in-progress: false
 
+env:
+  TAG: ${{ inputs.tag || github.ref_name }}
+
 jobs:
-  publish:
-    name: Prüfen und auf npm veröffentlichen
+  pruefen:
+    name: Prüfen (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
       contents: read
-      id-token: write
-    env:
-      TAG: ${{ inputs.tag || github.ref_name }}
+    strategy:
+      fail-fast: true
+      matrix:
+        node: ['22', '24']
+    outputs:
+      commit: ${{ steps.stand.outputs.commit }}
     steps:
       - name: Tag-Namen prüfen
         shell: bash
@@ -57,23 +64,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Node 24 einrichten
+      - name: Node einrichten
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: ${{ matrix.node }}
           package-manager-cache: false
 
-      - name: npm für Trusted Publishing (mindestens 11.5.1)
-        shell: bash
-        run: |
-          set -euo pipefail
-          if ! node -e 'const v = process.argv[1].split(".").map(Number); process.exit(v[0] > 11 || (v[0] === 11 && (v[1] > 5 || (v[1] === 5 && v[2] >= 1))) ? 0 : 1)' "$(npm --version)"; then
-            npm install -g npm@11.21.3
-          fi
-          echo "node $(node --version), npm $(npm --version)"
-
       - name: Tag, Version und main prüfen
+        id: stand
         shell: bash
         run: |
           set -euo pipefail
@@ -96,6 +94,7 @@ jobs:
             echo "::error::${name}@${version} ist schon veröffentlicht"
             exit 1
           fi
+          echo "commit=${commit}" >> "${GITHUB_OUTPUT}"
           echo "${name}@${version} aus ${commit}"
 
       - name: Laufzeit-Abhängigkeiten frisch installieren
@@ -130,6 +129,62 @@ jobs:
             process.exit(1)
           }
           JS
+
+  veroeffentlichen:
+    name: Auf npm veröffentlichen
+    needs: pruefen
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      COMMIT: ${{ needs.pruefen.outputs.commit }}
+    steps:
+      - name: Tag-Namen prüfen
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! [[ "${TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || ! [[ "${COMMIT}" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Ungültiger Tag-Name oder kein geprüfter Commit"
+            exit 1
+          fi
+
+      - name: Quelle holen
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ env.TAG }}
+          persist-credentials: false
+
+      - name: Node 24 einrichten
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - name: npm für Trusted Publishing (mindestens 11.5.1)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! node -e 'const v = process.argv[1].split(".").map(Number); process.exit(v[0] > 11 || (v[0] === 11 && (v[1] > 5 || (v[1] === 5 && v[2] >= 1))) ? 0 : 1)' "$(npm --version)"; then
+            npm install -g npm@11.21.3
+          fi
+          echo "node $(node --version), npm $(npm --version)"
+
+      - name: Genau den geprüften Commit veröffentlichen
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$(git rev-parse HEAD)" != "${COMMIT}" ]; then
+            echo "::error::Der Tag ${TAG} zeigt nicht mehr auf den geprüften Commit ${COMMIT}"
+            exit 1
+          fi
+          version="$(node -p 'require("./package.json").version')"
+          if [ "v${version}" != "${TAG}" ]; then
+            echo "::error::Tag ${TAG} passt nicht zu package.json (${version})"
+            exit 1
+          fi
 
       - name: Auf npm veröffentlichen (Trusted Publishing, Herkunftsnachweis automatisch)
         shell: bash
