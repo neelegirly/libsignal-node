@@ -1,6 +1,6 @@
 {
   "name": "@neelegirly/libsignal",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "Signal protocol crypto dependency for @neelegirly/baileys on Node.js",
   "repository": {
     "type": "git",
@@ -22,11 +22,11 @@
   "license": "MIT",
   "scripts": {
     "build": "pbjs -t static-module -w commonjs -o ./src/WhisperTextProtocol.js ./protos/WhisperTextProtocol.proto",
-    "test": "node --check index.js && node --check src/curve.js && node --check src/session_builder.js && node --check src/session_cipher.js && node -e \"const s=require('./'); if(typeof s.ProtocolAddress !== 'function' || typeof s.curve.getPublicFromPrivateKey !== 'function') process.exit(1)\""
+    "test": "node --check index.js && node --check src/curve.js && node --check src/session_builder.js && node --check src/session_cipher.js && node -e \"const s=require('./'); if(typeof s.ProtocolAddress !== 'function' || typeof s.curve.getPublicFromPrivateKey !== 'function') process.exit(1)\" && node --test test/*.test.js"
   },
   "dependencies": {
     "curve25519-js": "^0.0.4",
-    "protobufjs": "7.5.0"
+    "protobufjs": "^7.6.5"
   },
   "files": [
     "index.js",
