@@ -11,6 +11,11 @@ const protobufs = require('./protobufs');
 const queueJob = require('./queue_job');
 
 const VERSION = 3;
+// Longest time (ms) decryptWithSessions() keeps trying sessions before it lets
+// the event loop run (setImmediate). A record that is never stored (every
+// attempt fails, so removeOldSessions() never trims it) can grow to thousands
+// of sessions; trying all of them in one go blocked the process for over a second.
+const DECRYPT_YIELD_AFTER_MS = 15;
 let decryptSessionMismatchWarned = false;
 let lastDecryptDiagAt = 0; // ONIMAI: Rate-Limit für Diagnose-Logging (ms)
 
@@ -143,7 +148,15 @@ class SessionCipher {
             throw new errors.SessionError("No sessions available");
         }   
         const errs = [];
+        // Callers run inside queueJob() for this address, so no other job can
+        // touch this record while we yield. Order and results stay the same.
+        let sliceStart = Date.now();
         for (const session of sessions) {
+            const now = Date.now();
+            if (now - sliceStart > DECRYPT_YIELD_AFTER_MS || now < sliceStart) {
+                await new Promise((resolve) => setImmediate(resolve));
+                sliceStart = Date.now();
+            }
             let plaintext; 
             try {
                 plaintext = await this.doDecryptWhisperMessage(data, session);
